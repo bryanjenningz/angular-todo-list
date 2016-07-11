@@ -78,10 +78,13 @@
     todoApp.controller('todoCtrl', ['$scope', function($scope) {
       $scope.todos = []
       $scope.todoFilter = 'All'
+      $scope.todoText = ''
       $scope.inputBox = document.querySelector('.input-box')
       $scope.addTodo = function() {
-        $scope.todos.push({text: $scope.todoText, completed: false})
-        $scope.todoText = ''
+        if (/[^\s]/.test($scope.todoText)) {
+          $scope.todos.push({text: $scope.todoText, completed: false})
+          $scope.todoText = ''
+        }
         $scope.inputBox.focus()
       }
       $scope.deleteTodo = function(index) {
