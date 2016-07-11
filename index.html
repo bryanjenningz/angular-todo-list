@@ -54,6 +54,7 @@
       cursor: pointer;
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
 </head>
 <body ng-app="todoApp">
   <div ng-controller="todoCtrl">
@@ -72,7 +73,6 @@
       </div>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
   <script>
     var todoApp = angular.module('todoApp', [])
     todoApp.controller('todoCtrl', ['$scope', function($scope) {
