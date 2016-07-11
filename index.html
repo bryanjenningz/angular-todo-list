@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <title>Todo List</title>
+  <meta charset="utf-8">
+  <style>
+    .strike {
+      text-decoration: line-through;
+    }
+    .filter-container {
+      width: 200px;
+    }
+    .filter {
+      box-sizing: border-box;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      display: inline-block;
+      cursor: pointer;
+      width: 32%;
+      text-align: center;
+    }
+    .filter-selected {
+      background-color: black;
+      color: white;
+    }
+    .input-box {
+      padding: 5px;
+      font-size: 15px;
+      width: 150px;
+      height: 20px;
+    }
+    .add-todo-button {
+      height: 35px;
+      border: none;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      background-color: #c2c2c2;
+      border-radius: 5px;
+      margin: 0 2px;
+      cursor: pointer;
+    }
+    .todo-entry {
+      position: relative;
+      width: 200px;
+    }
+    .todo-entry-even {
+      background-color: #c2c2c2;
+    }
+    .todo-delete {
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body ng-app="todoApp">
+  <div ng-controller="todoCtrl">
+    <div class="filter-container">
+      <a class="filter" ng-class="{'filter-selected': todoFilter === 'All'}" ng-click="selectFilter('All')">All</a>
+      <a class="filter" ng-class="{'filter-selected': todoFilter === 'Incomplete'}" ng-click="selectFilter('Incomplete')">To-Do</a>
+      <a class="filter" ng-class="{'filter-selected': todoFilter === 'Completed'}" ng-click="selectFilter('Completed')">Done</a>
+    </div>
+    <form ng-submit="addTodo()">
+      <input class="input-box" ng-model="todoText"><button class="add-todo-button">Add</button>
+    </form>
+    <div ng-repeat="todo in todos | filter: filterTodo">
+      <div ng-class-even="'todo-entry-even'" class="todo-entry" ng-click="toggleTodo($index)">
+        <span ng-class="{strike: todo.completed}">{{todo.text}}</span>
+        <span class="todo-delete" ng-click="deleteTodo($index)">✖</span>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
+  <script>
+    var todoApp = angular.module('todoApp', [])
+    todoApp.controller('todoCtrl', ['$scope', function($scope) {
+      $scope.todos = []
+      $scope.todoFilter = 'All'
+      $scope.inputBox = document.querySelector('.input-box')
+      $scope.addTodo = function() {
+        $scope.todos.push({text: $scope.todoText, completed: false})
+        $scope.todoText = ''
+        $scope.inputBox.focus()
+      }
+      $scope.deleteTodo = function(index) {
+        $scope.todos.splice(index, 1)
+      }
+      $scope.selectFilter = function(filter) {
+        $scope.todoFilter = filter
+      }
+      $scope.filterTodo = function(todo) {
+        return $scope.todoFilter === 'All' ? true :
+          $scope.todoFilter === 'Completed' ? todo.completed :
+          $scope.todoFilter === 'Incomplete' ? !todo.completed : false
+      }
+      $scope.toggleTodo = function(index) {
+        $scope.todos[index].completed = !$scope.todos[index].completed
+      }
+      $scope.editTodo = function(index) {
+        console.log(index)
+      }
+    }])
+  </script>
+</body>
+</html>
